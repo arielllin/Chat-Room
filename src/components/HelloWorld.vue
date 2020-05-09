@@ -19,8 +19,8 @@
           <!-- other people -->
           <template v-if="item.userName !== userName">
             <div class="message-box" :key="item.id">
-              <div class="gender">
-                <font-awesome-icon :icon=" item.userGender " />
+              <div class="gender" :class="item.userGender">
+                <font-awesome-icon :icon="item.userGender" />
               </div>
               <div class="message-content">
                 <div class="message-user">
@@ -60,19 +60,19 @@
     <!-- modal -->
     <div v-show="userName === '' || userGender === ''" class="modal">
       <div class="modal-container">
-        <div class="modal-body">
-          <div class="model-title">LET'S CHAT ;)</div>
-          <input type="text" id="userName" class="user-name" maxlength="10" placeholder="Your Name">
-          <div class="user-gender">
-            <input name="gender" type="radio" class="box-gender" id="venus" value="venus">
-            <label for="venus"><font-awesome-icon icon="venus" /></label>
-            <input name="gender" type="radio" class="box-gender" id="mars" value="mars">
-            <label for="mars"><font-awesome-icon icon="mars" /></label>
-            <input name="gender" type="radio" class="box-gender" id="question" value="question">
-            <label for="question"><font-awesome-icon icon="question" /></label>
+        
+          <div class="modal-body">
+            <div class="model-title">LET'S CHAT ;)</div>
+              <input type="text" id="userName" class="user-name" maxlength="10" placeholder="Your Name">
+              <template v-for="(item, index) in genderInput">
+                <div class="user-gender" :key="item.id">
+                  <input name="gender" type="radio" class="box-gender" :id="item.id" :value="item.id" @click="active = index">
+                  <label :for="item.id" :class="{'user-gender-checked': active == index}"><font-awesome-icon :icon="item.id" /></label>
+                </div>
+              </template>
+            <div class="modal-button" @click="getName();getGender()">CHAT!</div>
           </div>
-          <div class="modal-button" @click="getName();getGender()">CHAT!</div>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -84,12 +84,15 @@
   name: 'HelloWorld',
   data () {
     return {
-      hoverMessageId: null,
       userName: '',
       userGender: '',
-      userNameSet: false,
-      userGenderSet: false,
-      msg: []
+      msg: [],
+      genderInput: [
+        {id: 'venus'},
+        {id: 'mars'},
+        {id: 'question'}
+      ],
+      active: null
     }
   },
   
@@ -100,7 +103,6 @@
       const userName = document.querySelector('#userName').value
       if(userName.trim() == '') {return}
       vm.userName = userName
-      vm.userNameSet = true
     },
     getGender(){
       const vm = this
@@ -108,7 +110,6 @@
       usergender.forEach(radio => {
         if(radio.checked === true){
           vm.userGender = radio.value
-          vm.userGenderSet = true
           return radio.value
         }
       })
@@ -149,14 +150,26 @@
       msg.value = '';
       e.preventDefault();
     },
+    // scrollbar維持在底部
+    scrollToBottom(){
+      const roomBody = document.querySelector('.room-body')
+      roomBody.scrollTop = roomBody.scrollHeight
+    }
   },
 
+  //mounted：模板已編譯完成，準備取值渲染HTML畫面
   mounted(){
     const vm = this
     cahtRoomRef.on('value', function(snapshot){
       const val = snapshot.val()
       vm.msg = val
     })
+  },
+
+  //updated：DOM 的更新已經完成，View 被顯示在畫面上。
+  updated() {
+    const vm = this
+    vm.scrollToBottom();
   }
 }
 </script>
@@ -266,7 +279,6 @@
 }
 .gender {
   color: #ffffff;
-  background-color: #ee6c4d;
   height: 40px;
   width: 40px;
   text-align: center;
@@ -277,6 +289,16 @@
 }
 .room-head .gender {
   font-size: 27px;
+  background-color: #ee6c4d;
+}
+.mars {
+  background-color: #98c1d9;
+}
+.venus {
+  background-color: #e5989b;
+}
+.question {
+  background-color: #84a59d;
 }
 .message-box .gender {
   font-size: 20px;
@@ -350,6 +372,7 @@
 }
 .user-gender {
   margin: 38px 0 50px;
+  display: inline-block;
 }
 .user-gender input[type="radio"] {
   display: none;
@@ -359,11 +382,22 @@
   border: 1px solid #ffffff;
   border-radius: 100%;
   padding: 10px 18px;
-  margin-right: 10px;
+  margin-right: 20px;
   cursor: pointer;
 }
-.user-gender input[type="radio"]:checked + label {
-  border: 2px solid #ee6c4d;
+.user-gender input[type="radio"] + label:hover {
+  border: 1px solid #ee6c4d;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow;
+  transition-property: box-shadow;
+  box-shadow: 0 0 0 2px #ee6c4d, 0 0 1px rgba(0, 0, 0, 0);
+}
+.user-gender-checked {
+  background-color: #ee6c4d;
+  border: none!important;
+  color: #ffffff;
+  transition-duration: 0.5s;
 }
 .modal-container {
   margin: auto;
