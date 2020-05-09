@@ -48,7 +48,7 @@
       </div>
       <!-- message -->
       <div class="room-message">
-        <textarea id="msg" class="message bg hvr-border-fade" :class="{ disable: !userName }" @keydown.enter="sendMessage($event)"></textarea>
+        <textarea id="msg" class="message bg hvr-border-fade" :class="{ disable: !userName }" @keypress.enter="sendMessage($event)"></textarea>
         <!-- v-on 可縮寫為 @ -->
         <div class="message-send">
           <button class="send-btn bg" @click="sendMessage($event)">
@@ -379,7 +379,8 @@
 }
 .user-gender input[type="radio"] + label {
   font-size: 20px;
-  border: 1px solid #ffffff;
+  color: #3a506b;
+  border: 1px solid #3a506b;
   border-radius: 100%;
   padding: 10px 18px;
   margin-right: 20px;
@@ -396,7 +397,7 @@
 .user-gender-checked {
   background-color: #ee6c4d;
   border: none!important;
-  color: #ffffff;
+  color: #ffffff!important;
   transition-duration: 0.5s;
 }
 .modal-container {
@@ -419,5 +420,13 @@
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
   margin-bottom: 50px;
   cursor: pointer;
+}
+@media screen and (max-width: 768px) {
+  .container {
+    padding-top: 0px;
+  }
+  .modal {
+    padding: 40px 0;
+  }
 }
 </style>
