@@ -1,21 +1,32 @@
-# room-chat
+# Chat-Room
 
-> A Vue.js project
+A live demo can be found on [this link](https://arielllin.github.io/Chat-Room/#/).
 
-## Build Setup
+## Tech Stack
 
-``` bash
-# install dependencies
-npm install
+* Vue.js
+* Firebase Storage
 
-# serve with hot reload at localhost:8080
-npm run dev
+## How to Use
 
-# build for production with minification
-npm run build
+```bash
+# Clone this repository
+$ git clone https://github.com/arielllin/Chat-Room.git
 
-# build for production and view the bundle analyzer report
-npm run build --report
+# Go into the repository
+$ cd Chat-Room
+
+# Install dependencies
+$ npm install
+
+# Run the app
+$ npm run dev
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## License
+
+MIT
+
+---
+
+> GitHub [@arielllin](https://github.com/arielllin)
